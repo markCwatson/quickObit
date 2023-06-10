@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String   @unique
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  obits         Obit[]
+  finalObitId   String?   @default("")
+  finalObitImg  String?   @default("")
+
+  numOfSubmitsLeft    Int?      @default(0) @map(name: "submissions_left")
+  stripePaymentId     String?   @unique @map(name: "stripe_Payment_id")
+  stripePriceId       String?   @map(name: "stripe_price_id")
+  stripePayPeriodEnd  DateTime? @map(name: "stripe_pay_period_end")
+}
+
+model Obit {
+  id              String    @id @default(cuid())
+  created         String
+  body            String    @db.Text
+  userId          String    
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  personId        String    
+  person          Person    @relation(fields: [personId], references: [id], onDelete: Cascade)
+  finalObitImage  String?
+
+  @@index([userId])
+  @@index([personId])
+}
+
+model Person {
+  id            String    @id @default(cuid())
+  name          String
+  age           String
+  bp            String
+  pod           String
+  dob           String
+  dod           String
+  parents       String
+  survived      String
+  predeceased   String
+  grandParents  String
+  grandKids     String
+  funeral       String
+  about         String
+  obits         Obit[]
+}
