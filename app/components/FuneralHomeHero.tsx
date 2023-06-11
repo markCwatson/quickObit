@@ -17,7 +17,7 @@ export default function FuneralHomeHero() {
         <p className="mt-6 text-lg leading-8 text-my-color10 dark:text-my-color1">
           Are you a funeral home in need of a CRM for managing your day-to-day
           operations? We&apos;d love to hear from you. Try quickObit and let us
-          know if can help. We can do more than just obituary writing.
+          know if we can help. We can do more than just obituary writing.
         </p>
         <div className="mt-10 flex flex-col gap-y-10 items-center justify-center md:flex-row md:gap-x-6 md:gap-y-0">
           <SignInButton text="Sign in to purchase" />

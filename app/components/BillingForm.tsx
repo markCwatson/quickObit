@@ -106,7 +106,7 @@ export default function BillingForm({
             <p className="rounded-full text-xs font-medium">
               {'Remaining submissions: '}
               <strong>{plan.numOfSubmitsLeft}</strong>
-              {' out of 10.'}
+              {' out of 3.'}
             </p>
           </Card.Footer>
         ) : null}

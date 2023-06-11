@@ -49,7 +49,7 @@ const MyDocument = ({ person, obit }: Props) => (
       <Text style={styles.subtitle}>
         {person?.dob} - {person?.dod}
       </Text>
-      <Image style={styles.image} src="/logo.png" />
+      <Image style={styles.image} src="/logo.svg" />
       <Text style={styles.text}>{obit}</Text>
     </Page>
   </Document>

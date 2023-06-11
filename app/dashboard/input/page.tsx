@@ -23,7 +23,7 @@ const processCheckout = async (sessionId: string, userId: string) => {
         id: userId,
       },
       data: {
-        numOfSubmitsLeft: 10,
+        numOfSubmitsLeft: 3,
         stripePaymentId: chekoutSession.id,
         stripePayPeriodEnd: new Date(Date.now() + 7 * 86_400_000), // 7 days.
       },

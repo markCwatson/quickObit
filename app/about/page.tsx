@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import type { Metadata } from 'next';
 import FuneralHomeHero from '@/components/FuneralHomeHero';
+import { Logo } from '@/components/Logo';
 
 export const metadata: Metadata = {
   title: 'quickObit | About',
@@ -18,10 +19,6 @@ const page: FC = () => {
         />
         <div className="mx-auto max-w-7xl px-6 py-12 md:py-64 md:px-16">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8">
-            <h1 className="max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
-              About quick
-              <span className="text-[#c331ff]">Obit</span>
-            </h1>
             <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
               <p className="text-lg leading-8 text-gray-600">
                 quickObit is a service for individuals to create custom
@@ -29,8 +26,8 @@ const page: FC = () => {
                 one should be affordable, and you should have complete control
                 over the tribute that will persist forever online. <br />
                 <br />
-                quickObit utilizes advanced artificial intelligence algorithms to
-                create personalized obituaries. This service saves time and
+                quickObit utilizes advanced artificial intelligence algorithms
+                to create personalized obituaries. This service saves time and
                 effort for those who need to write an obituary for a loved one
                 by automating the process. With quickObit, people can have a
                 fitting tribute for their loved ones without having to go
@@ -38,11 +35,9 @@ const page: FC = () => {
                 from scratch.
               </p>
             </div>
-            <img
-              src="/logo.png"
-              alt="quickObit logo"
-              className="mt-10 aspect-[10/5] w-full max-w-lg rounded-2xl object-cover lg:mt-24 lg:max-w-none xl:row-span-2 xl:row-end-2"
-            />
+            <div className="flex justify-center items-center pt-10 xs:pt-0">
+              <Logo />
+            </div>
           </div>
         </div>
         <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-white sm:h-32" />
