@@ -4,3 +4,4 @@ quickObit is an example NextJs web application that allows users to generate cus
 ## Known bugs
 1. Cannot add images to PDF: images can be uploaded, but I'm not sure yet how to add them to the PDF using react-pdf.
 2. Obituary not generated: this web application is hosted on Vercel. Vercel's free plan has a 10 second response timeout. Sometimes OpenAI's API takes longer than 10 seconds to respond. When this happens, the response will not be received in time.
+3. I am using a free version of PlanetScale to host the database. It goes to sleep after 7 days of inactivity. Therefore, I will be adding a new route used by a dummy Vercel CRON job that runs every 6 days to query the database to try and prevent this. If the database is asleep, you will see an error when being redirected to the dashboard after signing in. I'll try to set up the CRON job and route ASAP.
