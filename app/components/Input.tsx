@@ -33,184 +33,141 @@ const example: Person = {
 
 // \todo: the length of these strings must be limited (191 chars in prisma)
 
-// an enum mapping 0-12 to formPrompts heading
-const promptMap = {
-  name: 0,
-  age: 1,
-  bp: 2,
-  pod: 3,
-  dob: 4,
-  dod: 5,
-  parents: 6,
-  survived: 7,
-  predeceased: 8,
-  grandParents: 9,
-  grandKids: 10,
-  funeral: 11,
-  about: 12,
-};
-
 export default function Input({}: Props) {
   const session = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(example.name);
-  const [age, setAge] = useState(example.age);
-  const [bp, setBp] = useState(example.bp);
-  const [pod, setPod] = useState(example.pod);
-  const [dob, setDob] = useState(example.dob);
-  const [dod, setDod] = useState(example.dod);
-  const [parents, setParents] = useState(example.parents);
-  const [survived, setSurvived] = useState(example.survived);
-  const [predeceased, setPredeceased] = useState(example.predeceased);
-  const [grandParents, setGrandParents] = useState(example.grandParents);
-  const [grandKids, setGrandKids] = useState(example.grandKids);
-  const [funeral, setFuneral] = useState(example.funeral);
-  const [about, setAbout] = useState(example.about);
+
   const [person, setPerson] = useState<Person>(example);
+
   const [formPrompts, setFormPrompts] = useState<FormPrompt[]>(
     getDefaultFormPrompts(),
   );
 
+  // \todo: can do something in const time here instead?
+  function callback(heading: string, value: string) {
+    for (let i = 0; i < formPrompts.length; i++) {
+      if (formPrompts[i].heading === heading) {
+        // update change on formPrompts
+        formPrompts[i].value = value;
+
+        // update change on person
+        const key: keyof Person = formPrompts[i].id as keyof Person;
+        const newPerson: Person = { ...person };
+        newPerson[key] = value;
+        setPerson(newPerson);
+        return;
+      }
+    }
+  }
+
   function getDefaultFormPrompts() {
     return [
       {
+        id: 'name',
         heading: 'Full Name',
         placeholder: example.name,
-        value: undefined,
-        callback: setName,
+        value: '',
       },
       {
+        id: 'age',
         heading: 'Age',
         placeholder: example.age,
-        value: undefined,
-        callback: setAge,
+        value: '',
       },
       {
+        id: 'bp',
         heading: 'Birth Place',
         placeholder: example.bp,
-        value: undefined,
-        callback: setBp,
+        value: '',
       },
       {
+        id: 'pod',
         heading: 'Place of Death',
         placeholder: example.pod,
-        value: undefined,
-        callback: setPod,
+        value: '',
       },
       {
+        id: 'dob',
         heading: 'Date of Birth',
         placeholder: example.dob,
-        value: undefined,
-        callback: setDob,
+        value: '',
       },
       {
+        id: 'dod',
         heading: 'Date of Death',
         placeholder: example.dod,
-        value: undefined,
-        callback: setDod,
+        value: '',
       },
       {
+        id: 'parents',
         heading: 'Parents',
         placeholder: example.parents,
-        value: undefined,
-        callback: setParents,
+        value: '',
       },
       {
+        id: 'survived',
         heading: 'Survived by',
         placeholder: example.survived,
-        value: undefined,
-        callback: setSurvived,
+        value: '',
       },
       {
+        id: 'predeceased',
         heading: 'Predeceased by',
         placeholder: example.predeceased,
-        value: undefined,
-        callback: setPredeceased,
+        value: '',
       },
       {
+        id: 'grandParents',
         heading: 'Grand parents (indicate none if applicable)',
         placeholder: example.grandParents,
-        value: undefined,
-        callback: setGrandParents,
+        value: '',
       },
       {
+        id: 'grandKids',
         heading: 'Grandkids (indicate none if applicable)',
         placeholder: example.grandKids,
-        value: undefined,
-        callback: setGrandKids,
+        value: '',
       },
       {
+        id: 'funeral',
         heading: 'Funeral details',
         placeholder: example.funeral,
-        value: undefined,
-        callback: setFuneral,
+        value: '',
       },
       {
+        id: 'about',
         heading: 'Other information you want mentioned. The more the better.',
         placeholder: example.about,
-        value: undefined,
-        callback: setAbout,
+        value: '',
       },
     ];
   }
 
   function getPromptValues() {
+    // get person from session storage
     const personJson = sessionStorage.getItem('person');
     if (!personJson) {
       return;
     }
 
+    // parse person from json
     const person = JSON.parse(personJson);
     const formPrompts = getDefaultFormPrompts();
-    formPrompts[promptMap.name].value = person.name;
-    setName(person.name);
-    formPrompts[promptMap.age].value = person.age;
-    setAge(person.age);
-    formPrompts[promptMap.bp].value = person.bp;
-    setBp(person.bp);
-    formPrompts[promptMap.pod].value = person.pod;
-    setPod(person.pod);
-    formPrompts[promptMap.dob].value = person.dob;
-    setDob(person.dob);
-    formPrompts[promptMap.dod].value = person.dod;
-    setDod(person.dod);
-    formPrompts[promptMap.parents].value = person.parents;
-    setParents(person.parents);
-    formPrompts[promptMap.survived].value = person.survived;
-    setSurvived(person.survived);
-    formPrompts[promptMap.predeceased].value = person.predeceased;
-    setPredeceased(person.predeceased);
-    formPrompts[promptMap.grandParents].value = person.grandParents;
-    setGrandParents(person.grandParents);
-    formPrompts[promptMap.grandKids].value = person.grandKids;
-    setGrandKids(person.grandKids);
-    formPrompts[promptMap.funeral].value = person.funeral;
-    setFuneral(person.funeral);
-    formPrompts[promptMap.about].value = person.about;
-    setAbout(person.about);
+
+    // set formPrompts to person values
+    formPrompts.forEach((prompt) => {
+      prompt.value = person[prompt.id];
+    });
 
     setFormPrompts(formPrompts);
     setPerson(person);
   }
 
   function clearForm() {
-    setName('');
-    setAge('');
-    setBp('');
-    setPod('');
-    setDob('');
-    setDod('');
-    setParents('');
-    setSurvived('');
-    setPredeceased('');
-    setGrandParents('');
-    setGrandKids('');
-    setFuneral('');
-    setAbout('');
     formPrompts.forEach((prompt) => {
-      prompt.value = undefined;
+      prompt.value = '';
     });
   }
 
@@ -227,28 +184,13 @@ export default function Input({}: Props) {
     event.preventDefault();
     setOpen(true);
     setIsLoading(true);
+
     const response = await fetch('/api/openai/prompt', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        person: {
-          name,
-          age,
-          bp,
-          pod,
-          dob,
-          dod,
-          parents,
-          survived,
-          predeceased,
-          grandParents,
-          grandKids,
-          funeral,
-          about,
-        },
-      }),
+      body: JSON.stringify({ person }),
     });
 
     if (!response?.ok) {
@@ -268,8 +210,8 @@ export default function Input({}: Props) {
       },
     });
 
-    const { person, obit } = await response.json();
-    handleResponseAndRedirect(person, obit);
+    const { person: personResponse, obit } = await response.json();
+    handleResponseAndRedirect(personResponse, obit);
 
     setIsLoading(false);
   }
@@ -406,13 +348,13 @@ export default function Input({}: Props) {
                         type="text"
                         name={prompt.heading}
                         id={prompt.heading}
-                        onChange={(e) => prompt.callback(e.target.value)}
+                        onChange={(e) => callback(prompt.heading, e.target.value)}
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         defaultValue={
-                          prompt.value !== undefined ? prompt.value : ''
+                          prompt.value !== '' ? prompt.value : ''
                         }
                         placeholder={
-                          prompt.value !== undefined
+                          prompt.value !== ''
                             ? prompt.value
                             : prompt.placeholder
                         }

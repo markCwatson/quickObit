@@ -31,8 +31,8 @@ export type Person = {
 };
 
 export type FormPrompt = {
+  id: string;
   heading: string;
   placeholder: string;
-  value: string | undefined;
-  callback: (value: string) => void;
+  value: string;
 };
