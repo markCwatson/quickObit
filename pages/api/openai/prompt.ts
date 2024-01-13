@@ -10,7 +10,7 @@ const openai = new OpenAIApi(configuration);
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const completion = await openai.createCompletion({
-    model: 'text-davinci-003',
+    model: 'gpt-3.5-turbo-instruct',
     prompt: reviewPrompt(req.body.person),
     max_tokens: 1000,
     temperature: 0.8,
